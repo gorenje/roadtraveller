@@ -39,18 +39,9 @@
         min-height: 100%;
         height: 100%;
       }
-  %body
-    #info-container
-      #cities
-        %ul.citylist
-          %li
-            %a{ :href => "#", :onclick => "startStreetDriver(); return false" } Start SD
-          %li
-            %a{ :href => "#", :onclick => "stopStreetDriver(); return false" } Stop SD
-      #map
-    #pano-container
-      #pano
-      #pano2
+      ul.citylist {
+        list-style-type: none;
+      }
 
     :javascript
       var panorama, map, panoramaOptions, panorama2, lastobjid = null;
@@ -58,10 +49,16 @@
       var sdVisited = [], sdNotVisited = {}, initStreetDrive = true;
 
       function initCityList() {
+        _.templateSettings = {
+          interpolate: /\{\{(.+?)\}\}/g
+        };
+        var template = _.template($('#citylist-item-template').html());
+
         $.get("/cities.json",
           function(data){
           _.each( data.data, function(elem,idx){
-            $('ul.citylist').append("<li>"+elem.name+"</li>")
+            elem.json_data = _.escape(JSON.stringify(elem))
+            $('ul.citylist').append(template(elem))
           })
         });
       }
@@ -79,6 +76,19 @@
         });
 
         return cacheLinks(lnks);
+      }
+
+      function travelCity(elem) {
+        stopStreetDriver();
+        movePanoramaTo($(elem).data().json);
+        setTimeout(startStreetDriver, 2000);
+      }
+
+      function movePanoramaTo(data) {
+        map.setCenter( data.location )
+        panorama2.setPano(data.id)
+        panorama.setPov(data.pov)
+        panorama.setZoom(data.zoom)
       }
 
       function cacheLinks(links) {
@@ -154,11 +164,7 @@
           "pov":{"heading":256.86,"pitch":17.700000000000003},
           "zoom":0
         }
-
-        map.setCenter( data.location )
-        panorama2.setPano(data.id)
-        panorama.setPov(data.pov)
-        panorama.setZoom(data.zoom)
+        movePanoramaTo(data);
         setTimeout( startStreetDriver, 2000 );
       }
 
@@ -171,7 +177,7 @@
             mode: 'webgl',
             clickToGo: true,
             addressControlOptions: {
-                position: google.maps.ControlPosition.BOTTOM_LEFT
+                position: google.maps.ControlPosition.TOP_LEFT
             },
             linksControl: true,
             panControl:false,
@@ -206,5 +212,19 @@
         firstLocation();
         setTimeout(initCityList, 1500);
       }
+
+  %body
+    #info-container
+      #cities
+        %ul.citylist
+      #map
+    #pano-container
+      #pano
+      #pano2
+
+    #citylist-item-template(style = "display: none;")
+      %li
+        %a{ :href => '#', :onclick => "travelCity(this); return false;", :data => {:json => "{{json_data}}"} }= "{{name}}"
+
     %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=initialize"}
       :cdata
