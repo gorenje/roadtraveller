@@ -1,11 +1,6 @@
-# Suntraveller
+# Road Traveller
 
-Travel the world via Google Photosphere and always look at the sun!
-
-Very simple application for showing you a random sun somewhere on the
-planet!
-
-Enjoy!
+Pick a city and travel its roads.
 
 # Deploy
 
@@ -14,10 +9,9 @@ git push.
 
 # Demo
 
-Currently available [here](http://suntraveller.herokuapp.com/).
+Currently available [here](https://roadtraveller.herokuapp.com/).
 
 # Background
 
-The various Google Photospheres are provided by this
-[gist](https://gist.github.com/gorenje/038a6a617f6501921bcc8be9d2046386)
-and is updated perpetually.
+The various start locations are provided by this
+[gist](https://gist.github.com/gorenje/4e98ff32c2e03a7fe442d08f17469399).
