@@ -20,6 +20,7 @@
                                return $(elem).text() == "Nullabor, Australia";
                              })
         $($('.citylist').find('a')[idx]).addClass("highlight")
+        setTimeout(pickRandomRoute, 4000);
     });
   }
 
@@ -76,14 +77,16 @@
     return returnLink;
   }
 
+  function pickRandomRoute() {
+    clearTimeout( streetDriverTimeout );
+    var idx = _.random($('.citylist').find('a').length-1)
+    $('.citylist').find('a')[idx].click()
+    return false;
+  }
+
   function followLink() {
     var link = linkClosestsToHeading();
-    if (! link ) {
-      clearTimeout( streetDriverTimeout );
-      var idx = _.random($('.citylist').find('a').length-1)
-      $('.citylist').find('a')[idx].click()
-      return false;
-    }
+    if ( !link ) return pickRandomRoute();
     setHeading(link);
     panorama.setPano(link.pano);
     return true;
