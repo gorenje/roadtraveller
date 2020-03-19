@@ -16,11 +16,7 @@
           $('ul.citylist').append(template(elem))
         })
 
-        var idx = _.findIndex( $('.citylist').find('a'), function(elem) {
-                               return $(elem).text() == "Nullabor, Australia";
-                             })
-        $($('.citylist').find('a')[idx]).addClass("highlight")
-        setTimeout(pickRandomRoute, 4000);
+        setTimeout(pickRandomRoute, 1000);
     });
   }
 
@@ -80,7 +76,7 @@
   function pickRandomRoute() {
     clearTimeout( streetDriverTimeout );
     var idx = _.random($('.citylist').find('a').length-1)
-    $('.citylist').find('a')[idx].click()
+    $('.citylist').find('a')[0].click()
     return false;
   }
 
@@ -122,19 +118,6 @@
     var pov = panorama.getPov();
     pov.heading = heading;
     panorama.setPov(pov);
-  }
-
-  function firstLocation() {
-    var data = {
-      "name":"Nullabor, Australia",
-      "link":"https://www.google.com/maps/@-31.5506989,130.6277694,0a,71.8y,256.86h,107.7t/data=!3m4!1e1!3m2!1s404CUqt24ypiR9g8TpJp2g!2e0?source=apiv3",
-      "id":"404CUqt24ypiR9g8TpJp2g",
-      "location":{"lat":-31.5506989,"lng":130.6277694},
-      "pov":{"heading":256.86,"pitch":17.700000000000003},
-      "zoom":0
-    }
-    movePanoramaTo(data);
-    setTimeout( startStreetDriver, 2000 );
   }
 
   function initialize() {
@@ -181,6 +164,5 @@
        }
     });
 
-    firstLocation();
     setTimeout(initCityList, 1500);
   }
