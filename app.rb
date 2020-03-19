@@ -37,7 +37,7 @@ class Webapp < Sinatra::Base
   get '/cities.json' do
     content_type :json
     {
-      :data => entries.shuffle
+      :data => entries
     }.to_json
   end
 
