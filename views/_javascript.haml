@@ -16,13 +16,12 @@
           $('ul.citylist').append(template(elem))
         })
 
-        setTimeout(pickRandomRoute, 1000);
+        setTimeout(pickFirstRoute, 1000);
     });
   }
 
   function linkClosestsToHeading() {
     var links = panorama.getLinks();
-    if ( links.length === 1 ) { return links[0]; }
 
     var currentHeading = panorama.getPov().heading;
     var lnks = links.sort(function(a,b){
@@ -73,16 +72,29 @@
     return returnLink;
   }
 
-  function pickRandomRoute() {
+  function pickFirstRoute() {
     clearTimeout( streetDriverTimeout );
-    var idx = _.random($('.citylist').find('a').length-1)
     $('.citylist').find('a')[0].click()
+    return false;
+  }
+
+  function pickNextRoute() {
+    clearTimeout( streetDriverTimeout );
+
+    var currentIndex =
+        $('.citylist').find('a').index($('.citylist').find('a.highlight')[0]);
+
+    if ( currentIndex + 1 >= $('.citylist').find('a').length ) {
+      return pickFirstRoute();
+    }
+
+    $('.citylist').find('a')[currentIndex+1].click()
     return false;
   }
 
   function followLink() {
     var link = linkClosestsToHeading();
-    if ( !link ) return pickRandomRoute();
+    if ( !link ) return pickNextRoute();
     setHeading(link);
     panorama.setPano(link.pano);
     return true;
