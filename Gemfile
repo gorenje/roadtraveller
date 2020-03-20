@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.4.3'
+ruby '2.6.4'
 
 gem 'rake'
 gem 'pry'
