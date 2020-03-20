@@ -8,11 +8,12 @@
     = haml(:_css)
     = haml(:_javascript)
   %body
-    #info-container
+    #info-container.hideable
       #buttons
         .button-container
+          %a{ :href => "#", :onclick => "hideSideBar(); return false" } &#8647;
           %a{ :href => "#", :onclick => "startStreetDriver(); return false" } &#x25B6;
-          %a{ :href => "#", :onclick => "stopStreetDriver(); return false" }  	&#9632;
+          %a{ :href => "#", :onclick => "stopStreetDriver(); return false" } &#9632;
       #cities
         %ul.citylist
       #map

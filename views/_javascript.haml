@@ -3,6 +3,11 @@
   var streetDriverTimeout = null;
   var sdVisited = [], sdNotVisited = {}, initStreetDrive = true;
 
+  function hideSideBar() {
+    $('.hideable').hide();
+    $('#pano-container').css('width', '100%');
+  }
+
   function initCityList() {
     _.templateSettings = {
       interpolate: /\{\{(.+?)\}\}/g
